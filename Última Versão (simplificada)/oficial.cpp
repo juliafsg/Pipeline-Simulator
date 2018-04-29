@@ -123,7 +123,7 @@ int main(){
 		}
 	}
 
-/*	for(int i = 0; i <n_instrucoes; i++){
+	for(int i = 0; i <n_instrucoes; i++){
 		
 		if(linha[i].executa == false){
 
@@ -145,13 +145,13 @@ int main(){
 
 			}
 		}
-	}*/
+	}
 
 
 
 //DEPENDENCIAS
 
-   	for(int i = 1; i < n_instrucoes; i++){
+   	for(int i = 0; i < n_instrucoes; i++){
 
 		for(int j = 1; j<i ; j++){
 
@@ -219,6 +219,8 @@ int main(){
 
 //MONTAR O PIPELINE
 
+	//Sem dependencias
+
 	for(int i=0; i<n_instrucoes;i++){
 
 		linha[i].ciclo_inicia = i;
@@ -226,6 +228,8 @@ int main(){
 
 	}
 	
+	//Ajustar dependencias
+
 	for(int i=0; i<n_instrucoes;i++){
 
 		if(linha[i].dependencia != 0){
@@ -233,7 +237,10 @@ int main(){
 			int z;
 			z = linha[i].dependencia;
 
-			linha[i].ciclo_inicia = linha[z].ciclo_termina;
+			if(linha[i].ciclo_inicia < linha[z].ciclo_termina){
+
+				linha[i].ciclo_inicia = linha[z].ciclo_termina;
+			}
 
 		}
 	}
