@@ -1,49 +1,57 @@
-
 #include<iostream>
 #include<string>
+//#include <vector>
 
-using namespace std;
+
 
 struct comando{
 
 //TO DO zerar os valores das strings
-	string operacao;
-	string opcode;
-	string operador1;
-	string operador2;
-	string resultado;
-	comando *pula_para;
-	int *dependencia;
-	bool executa;
-	int ciclo_inicia;
-	int ciclo_termina;
+  string operacao;
+  string opcode;
+  string operador1;
+  string operador2;
+  string resultado;
+  comando *pula_para;
+  int *dependencia;
+  bool executa;
+  int ciclo_inicia;
+  int ciclo_termina;
 }
 
 struct ciclo {
 
-	string IF;
-	string ID;
-	string EX;
-	string MEM;
-	string WB;
+  string IF;
+  string ID;
+  string EX;
+  string MEM;
+  string WB;
 }
 
 int main() {
-
-	ciclo *num_ciclo;//aponta para o ciclo
-	comando *linha; //TO DO : alocação com new // aponta para a linha do comando
-	string codigo; // guarda todo o codigo
+  int n_instrucoes;
+  string codigo; // guarda todo o codigo
 
 //ler  o codigo
 
-	cin << codigo;
+  std::cout<<"Digite seu código:"<<std::endl;
+  std::cin.get(codigo);
 
 
-	int p = 0;// guarda a posicao no codigo
+  std::cout<<"Quantas instruções tem seu código?"<<std::endl;
+  std::cin << n_instrucoes;
+  
+  
+  comando linha[n_instrucoes];
+	
+  int p = 0;// guarda a posicao no codigo
 	int z = 0; //guarda a label da instrução
 	int f = 0; //guarda o fim do conjunto de carqacteres e inicio do proximo
 	int ii = 0; //guarda inicio da instrucao
-for(int i = 0; i < strlen(codigo); i++){
+
+
+for(int i = 0; i <= sizeof(codigo); i++){
+
 
 
 //Quando estivermos na 1a parte p=0 que vai se referir instrucao
@@ -183,122 +191,4 @@ for(int i = 0; i < strlen(codigo); i++){
 	}
 
 }
-
-
-
-
-//determinar a ordem que são executadas
-
-	//percorre as instrucoes
-
-		//verifica se tem um bne , beq ou jump
-
-			//da linha onde tem o pulo, ate a linha que o pula_para do pulo aponta , nada sera executado. exclui essas linhas trazendo as da frente para o lugar dela 
-
-
-
-
-
-//verificar as dependencias
-
-
-	int k = 0; //contador das dependencias
-
-	for (int i = total_Linhas; i>0; i--){ //percorre do ultimo elemento
-
-		for (int j = total_linhas-1; j<0; j--){ //verifica com todos acima
-
-
-
-				//BEQ E BNE
-
-				if (linha[i].opcode== 'beq' || linha[i].opcode == 'bne'){//se for do tipo beq ou bne
-
-					//verifica se os operandos sao alterados acima
-
-					//adiciona a linha como dependencia
-
-
-				}		
-
-				//ADD E SUB
-					
-				if (linha[i].opcode == 'add' || linha[i].opcode == 'sub'){ //caso a instrucao seja do tipo add ou do tipo sub 
-
-					if (linha[i].operador1 == linha[j].resultado || (linha[i].operador2 == linha[j].resultado) ){ // verifica se os operandos recebem algum valor anteriormente pelo resultado
-
-						linha[i].dependencia[k] = j; // Adiciona a linha como dependencia
-
-						k++;
-
-					}
-	  				
-	     		}
-
-			}
-
-			if (linha[i].opcode == 'jump'){ // se for do tipo jump
-
-
-				//dependencia = nao existe
-
-			}	
-
-			if (linha[i].opcode == 'sw'){
-
-				//dependencia do operador 1
-			}
-		
-			if (linha[i].opcode == 'lw'){}
-
-				//nao tem dependencia
-
-		
-	}
-
-
-
-//percorrer os ciclos
-
-//montar o pipeline sem considerar as dependencias
-
-	// ciclo[j].IF tera instrucao[j].operacao
-	// ciclo[j+1].ID tera instrucao[j].operacao
-	// ciclo[j+2].EX tera instrucao[j].operacao
-	// ciclo[j+3].MEM tera instrucao[j].operacao
-	// ciclo[j+4].WB tera instrucao[j].operacao
-	
-//percorre as instrucoes
-
- //diz as posicoes sem considerar as dependencias
-
-  //instrucao[i].Ciclo_inicia tera como inicio o ciclo i 
-  //instrucao[i].ciclo_termina tera como fim o ciclo i+4 	
-
-
-//percorrer instrucoes
-
-//verificar a partir da linha[2] se tem alguma dependencia de dados
-
-	//pega o maior valor do label.
-
-		//o fim do label  passa ser o inicio da linha que depende do label
-
-				//o inicio da label - i onde ela estava ante é o deslocamente feito
-
-		//percorre todas as instrucoes
-
-			//inicio e o fim de cada uma das proximas instrucoes (de i+1 até o fim)	aumenta em inicio da label - i	
-
-
-
-
- 	
-
-
-
-
-
-	return 0;
-
 }
