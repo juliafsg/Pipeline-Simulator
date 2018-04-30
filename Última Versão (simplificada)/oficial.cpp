@@ -1,5 +1,6 @@
 #include<iostream>
 #include<string>
+#include<stdlib.h>
 using namespace std;
 
 struct comando{
@@ -10,10 +11,10 @@ struct comando{
   string operador2;
   string resultado;
   string pula_para;
-  int dependencia;
+  int dependencia=0;
   bool executa = true;
-  int ciclo_inicia;
-  int ciclo_termina;
+  int ciclo_inicia =0;
+  int ciclo_termina=0;
 };
 
 struct ciclo{
@@ -33,6 +34,7 @@ int main(){
 	cin >> n_instrucoes;
 
 	n_instrucoes++;
+
 	comando linha[n_instrucoes]; //incializa as instruções
 	
   	//ler  o codigo
@@ -42,14 +44,14 @@ int main(){
 	}
 
 	//separa opcode
-	for(int i = 0; i <n_instrucoes; i++){
+	for(int i = 1; i <n_instrucoes; i++){
 		int p1;
 		p1 = linha[i].operacao.find(" ", 0);
 		linha[i].opcode = linha[i].operacao.substr(0, p1);
 	}
 
 	//Separando os operandos
-	for(int i = 0; i < n_instrucoes; i++){
+	for(int i = 1; i < n_instrucoes; i++){
 		if(linha[i].opcode == "sub" || linha[i].opcode =="add"){ //Caso seja sub ou add
 			int p1,p2,p3,p4;
 			p1 = linha[i].operacao.find(" ", 0);
@@ -106,28 +108,31 @@ int main(){
 
 //EXCLUIR APOS O JUMP
 
-	for(int i = 0; i <n_instrucoes; i++){
+	for(int i = 1; i <n_instrucoes; i++){
 		
 		if(linha[i].opcode == "bne" || linha[i].opcode == "j" || linha[i].opcode == "beq"){
 
-			int u[1];
-			int v;
-			u[0] = linha[i].pula_para[0];
-			v=u[0];
+			int v;	
+			char u[1];
+			u[0] = linha[i].pula_para[0];		
+			v = atoi(u);
+	
+			for(int j = i+1 ; j<v; j++){
 
-			for(int j = i ; j<v; j++){
-
-				linha[i].executa = false;
+				linha[j].executa = false;
+				
 
 			}
 		}
 	}
+	
 
-	for(int i = 0; i <n_instrucoes; i++){
+	
+	for(int i = 1; i <n_instrucoes; i++){
 		
 		if(linha[i].executa == false){
 
-			for(int j = i; j<n_instrucoes;j++){
+			for(int j = i; j<n_instrucoes-1;j++){
 
 				linha[j].operacao = linha[j+1].operacao;
   				linha[j].opcode= linha[j+1].opcode;
@@ -140,18 +145,17 @@ int main(){
 				linha[j].ciclo_inicia = linha[j+1].ciclo_inicia;
 				linha[j].ciclo_termina = linha[j+1].ciclo_termina;
 
-				n_instrucoes-=1;
-
-
 			}
+		n_instrucoes --;
 		}
 	}
 
-
+	
+	
 
 //DEPENDENCIAS
 
-   	for(int i = 0; i < n_instrucoes; i++){
+   	for(int i = 1; i < n_instrucoes; i++){
 
 		for(int j = 1; j<i ; j++){
 
@@ -240,18 +244,27 @@ int main(){
 			if(linha[i].ciclo_inicia < linha[z].ciclo_termina){
 
 				linha[i].ciclo_inicia = linha[z].ciclo_termina;
+				linha[i].ciclo_termina=linha[i].ciclo_inicia+4;  
+
+				for(int j=i; j<n_instrucoes;j++){
+				
+					linha[j+1].ciclo_inicia = linha[j].ciclo_inicia+1;
+					linha[j+1].ciclo_termina = linha[j+1].ciclo_inicia+4; 
+				}	
 			}
 
 		}
 	}
-
-	ciclo c[linha[n_instrucoes].ciclo_termina];
+	int x = n_instrucoes-1;
+	int apoio = linha[x].ciclo_termina;
+	apoio++;
+	ciclo c[apoio];
 	int n_ciclos;
-	n_ciclos = linha[n_instrucoes].ciclo_termina;
+	n_ciclos = apoio;
 
-	for(int i=0;i< n_ciclos;i++){
+	for(int i=1;i< n_ciclos;i++){
 
-		for (int j =0; j<n_instrucoes; j++){
+		for (int j =1; j< n_instrucoes; j++){
 
 			if(linha[j].ciclo_inicia == i){
 
@@ -264,14 +277,31 @@ int main(){
 		}
 	}
 
-	for(int i =0; i< n_ciclos; i++){
-		cout << "\n----------------\nCiclo------------------ " << i;
+	
+	cout<<endl<<"PIPELINE "<<endl; 
+	cout<<endl<<"Total de Ciclos: "<< n_ciclos-1<<endl; 	
+	
+	for(int i =1; i< n_ciclos; i++){
+		cout << "\n----------------\nCiclo " << i;
 		cout << "\nIF: "<<c[i].IF;
 		cout << "\nID: "<<c[i].ID;
 		cout << "\nEX: "<<c[i].EX;
 		cout << "\nMEM: "<<c[i].MEM;
 		cout << "\nWB: "<<c[i].WB;
+		cout<<endl;
 
-	}				
+	}	
+
+	//cout<<endl<< linha[2].ciclo_inicia;
+	//cout<<endl<<linha[2].dependencia;
+	//cout<<endl<< linha[2].ciclo_termina;
+
+	//cout<<endl<< linha[3].ciclo_inicia;
+	//cout<<endl<< linha[3].ciclo_termina;
+
+	//cout<<endl<< apoio;
+
+
+		
 	return 0;
 }
