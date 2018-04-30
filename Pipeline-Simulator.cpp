@@ -56,22 +56,22 @@ int main(){
 			int p1,p2,p3,p4;
 			p1 = linha[i].operacao.find(" ", 0);
 			p2 = linha[i].operacao.find(" ", p1+1);
-   			linha[i].resultado = linha[i].operacao.substr(p1+1, p2-p1);
+   			linha[i].resultado = linha[i].operacao.substr(p1+1, p2-p1-1);
    			p3 = linha[i].operacao.find(" ", p2+1);
-   			linha[i].operador1 = linha[i].operacao.substr(p2+1, p3-p2);
+   			linha[i].operador1 = linha[i].operacao.substr(p2+1, p3-p2-1);
    			p4 = linha[i].operacao.find(" ", p3+1);
-   			linha[i].operador2 = linha[i].operacao.substr(p3+1, p4-p3);
+   			linha[i].operador2 = linha[i].operacao.substr(p3+1, p4-p3-1);
 
    		} 	
 
    		else if(linha[i].opcode == "lw"){ //caso seja lw
-   			int p1,p2,p3,p4;
-   			p1 = linha[i].operacao.find("(", 0);
-			p2 = linha[i].operacao.find(")", p1+1);
-			p3 = linha[i].operacao.find(" ", p2+1);
+   		 	int p1,p2,p3,p4;
+   		   	p1 = linha[i].operacao.find(" ", 0);
+			p2 = linha[i].operacao.find(" ", p1+1);
    			linha[i].resultado = linha[i].operacao.substr(p1+1, p2-p1-1);
-   			p4 = linha[i].operacao.find(" ", p3+1);
-   			linha[i].operador1 = linha[i].operacao.substr(p3+1, p4-p3);
+   			p3 = linha[i].operacao.find("(", p2+1);
+   			p4 = linha[i].operacao.find(")", p3+1);
+   			linha[i].operador1 = linha[i].operacao.substr(p3+1, p4-p3-1);
    		}
 
 
@@ -79,18 +79,18 @@ int main(){
    			int p1,p2,p3,p4;
    			p1 = linha[i].operacao.find(" ", 0);
 			p2 = linha[i].operacao.find(" ", p1+1);
-   			linha[i].operador1 = linha[i].operacao.substr(p1+1, p2-p1);
+   			linha[i].operador1 = linha[i].operacao.substr(p1+1, p2-p1-1);
    			p3 = linha[i].operacao.find(" ", p2+1);
-   			linha[i].operador2 = linha[i].operacao.substr(p2+1, p3-p2);
+   			linha[i].operador2 = linha[i].operacao.substr(p2+1, p3-p2-1);
    			p4 = linha[i].operacao.find(" ", p3+1);
-   			linha[i].pula_para = linha[i].operacao.substr(p3+1, p4-p3);
+   			linha[i].pula_para = linha[i].operacao.substr(p3+1, p4-p3-1);
    		}
 
 		else if(linha[i].opcode == "sw"){ //caso seja sw
    		   	int p1,p2,p3,p4;
    		   	p1 = linha[i].operacao.find(" ", 0);
 			p2 = linha[i].operacao.find(" ", p1+1);
-   			linha[i].operador1 = linha[i].operacao.substr(p1+1, p2-p1);
+   			linha[i].operador1 = linha[i].operacao.substr(p1+1, p2-p1-1);
    			p3 = linha[i].operacao.find("(", p2+1);
    			p4 = linha[i].operacao.find(")", p3+1);
    			linha[i].resultado = linha[i].operacao.substr(p3+1, p4-p3-1);
@@ -100,7 +100,7 @@ int main(){
    		   	int p1,p2;
    		   	p1 = linha[i].operacao.find(" ", 0);
 			p2 = linha[i].operacao.find(" ", p1+1);
-   			linha[i].pula_para = linha[i].operacao.substr(p1+1, p2-p1);
+   			linha[i].pula_para = linha[i].operacao.substr(p1+1, p2-p1-1);
    		}	
 
    	}	
@@ -164,15 +164,15 @@ int main(){
 
 				if (linha[i].opcode== "beq" || linha[i].opcode == "bne"){//se for do tipo beq ou bne
 
-					if(linha[i].operador1 == linha[j].resultado || linha[i].operador2 == linha[j].resultado) {
+					if((linha[i].operador1 == linha[j].resultado) || (linha[i].operador2 == linha[j].resultado)) {
 
-						linha[i].dependencia = i;
+						linha[i].dependencia = j;
 					}
 				}
 
 				else if (linha[i].opcode == "add" || linha[i].opcode == "sub"){ //se for add ou sub
 
-					if (linha[i].operador1 == linha[j].resultado || (linha[i].operador2 == linha[j].resultado) ){ 
+					if ((linha[i].operador1 == linha[j].resultado) || (linha[i].operador2 == linha[j].resultado) ){ 
 
 						linha[i].dependencia = j; // Adiciona a linha como dependencia
 				    }	
@@ -180,7 +180,7 @@ int main(){
 
 				else if (linha[i].opcode == "sw"){ //se for add ou sub
 
-					if (linha[i].operador1 == linha[j].resultado || (linha[i].resultado == linha[j].resultado) ){ 
+					if ((linha[i].operador1 == linha[j].resultado) || (linha[i].resultado == linha[j].resultado) ){ 
 
 						linha[i].dependencia = j; // Adiciona a linha como dependencia	
 					}	
@@ -188,34 +188,12 @@ int main(){
 
 				else if (linha[i].opcode == "lw"){ //se for add ou sub
 
-					if (linha[i].operador1 == linha[j].resultado || (linha[i].resultado == linha[j].resultado) ){ 
+					if ((linha[i].operador1 == linha[j].resultado)){ 
 
 						linha[i].dependencia = j; // Adiciona a linha como dependencia	
 					}	
 				}	
-			}
-
-			else if (linha[j].opcode == "sw"){
-
-				if (linha[i].opcode == "lw"){
-					string x,y;
-					int p1,p2;
-					p1 = linha[i].operacao.find(" ", 4);
-					p2 = linha[i].operacao.find(" ",p2+1);
-					x = linha[i].operacao.substr(p1, p2-p1);
-
-					int p3,p4;
-					p3 = linha[j].operacao.find(" ", 4);
-					p4 = linha[j].operacao.find(" ", p3+1);
-					y = linha[j].operacao.substr(p3, p4-p3);
-
-
-					if (x==y){
-
-						linha[i].dependencia = j;
-					}
-				}
-			}
+			}			
 		}
 	}
 
@@ -244,7 +222,7 @@ int main(){
 			if(linha[i].ciclo_inicia < linha[z].ciclo_termina){
 
 				linha[i].ciclo_inicia = linha[z].ciclo_termina;
-				linha[i].ciclo_termina=linha[i].ciclo_inicia+4;  
+				linha[i].ciclo_termina = linha[i].ciclo_inicia+4;  
 
 				for(int j=i; j<n_instrucoes;j++){
 				
@@ -290,16 +268,8 @@ int main(){
 		cout << "\nWB: "<<c[i].WB;
 		cout<<endl;
 
-	}	
+	}
 
-	//cout<<endl<< linha[2].ciclo_inicia;
-	//cout<<endl<<linha[2].dependencia;
-	//cout<<endl<< linha[2].ciclo_termina;
-
-	//cout<<endl<< linha[3].ciclo_inicia;
-	//cout<<endl<< linha[3].ciclo_termina;
-
-	//cout<<endl<< apoio;
 
 
 		
