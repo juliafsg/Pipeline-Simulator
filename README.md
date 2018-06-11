@@ -9,14 +9,15 @@ Repositório dedicado a criação de um simulador de pipeline em 5 etapas: IF, I
 
 -> As dependências de dados são levadas em consideração. 
 
--> Para compilar o código basta digitar o comando : g++ -o pipeline-simulator oficial.cpp
+-> Para compilar o código basta digitar o comando : g++ -o pipeline-simulator Pipeline-Simulator.cpp
+-> Para executar o programa basta digitar: ./pipeline-simulator
 
 -> Ao escrever o codigo em Assembly você deve:
-    a) Digitar uma instrução, depois dê  enter e então digitar a próxima instrução;
-    b) O opcode e operandos são separados apenas por um espaço exemplo:
-          add $s1 $s3 $s2
-    c) e as funçoes que acessam a memória devem ser escritas sem espaçoes após o parenteses seguindo o exemplo:
-          lw 10($s1) $s2
-    d) o mesmo serve para as funçoes de salto, que além de seguir o modelo de espaçamento, terão como label o número da instrução que deseja saltar;
+   - Digitar uma instrução, depois dê  enter e então digitar a próxima instrução;
+   - O opcode e operandos são separados apenas por um espaço exemplo:
+          <p>add $s1 $s3 $s2
+   - e as funçoes que acessam a memória devem ser escritas sem espaçoes após o parenteses seguindo o exemplo:
+          <p> lw 10($s1) $s2
+   - o mesmo serve para as funçoes de salto, que além de seguir o modelo de espaçamento, terão como label o número da instrução que deseja saltar;
           
           
